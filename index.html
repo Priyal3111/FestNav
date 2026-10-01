@@ -22,11 +22,16 @@
         <span class="sep">•</span>
         <a href="#lost-found" class="helpline-link">🔍 Lost & Found: Pre-Auditorium Desk #1</a>
         <span class="sep">•</span>
-        <a href="tel:+919876543211" class="helpline-link">🛡️ Security: +91 98765 43211</a>
+        <a href="#squad-finder" class="helpline-link">👥 Friend Radar: <span id="squadCountStatus">3 Online</span></a>
       </div>
-      <button class="quick-pass-btn" id="openMyPassesBtn" title="View Registered Tickets">
-        🎟️ My Passes (<span id="passCountBadge">0</span>)
-      </button>
+      <div style="display: flex; gap: 8px;">
+        <button class="quick-pass-btn" id="openBeaconQuickBtn" title="Launch Visual Strobe Beacon for Loud Areas" style="background: rgba(236, 72, 153, 0.2); border-color: #ec4899; color: #fbcfe8;">
+          🚨 Flash Beacon
+        </button>
+        <button class="quick-pass-btn" id="openMyPassesBtn" title="View Registered Tickets">
+          🎟️ My Passes (<span id="passCountBadge">0</span>)
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -43,6 +48,7 @@
 
       <nav class="nav-links" id="mainNav">
         <a href="#floor-navigator" class="nav-item active"><span class="nav-icon">🏢</span> Floor Plans & Map</a>
+        <a href="#squad-finder" class="nav-item"><span class="nav-icon">👥</span> Friend Radar</a>
         <a href="#events" class="nav-item"><span class="nav-icon">📅</span> Events & Capacity</a>
         <a href="#food-stalls" class="nav-item"><span class="nav-icon">🍔</span> Canteen & Food</a>
         <a href="#medical-help" class="nav-item"><span class="nav-icon">🚑</span> Medical Aid</a>
@@ -210,6 +216,154 @@
             </div>
 
             <button class="primary-action-btn w-100" id="locPrimaryBtn">Register for Next Event</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: FESTSQUAD - FRIEND RADAR & OFFLINE COMPANION -->
+    <section id="squad-finder" class="content-section">
+      <div class="section-header-row">
+        <div>
+          <div class="section-tag purple-tag">👥 FestSquad • Friend Radar & Crowd Sync</div>
+          <h2 class="section-title">Connect with Friends Across Floors & Crowds</h2>
+          <p class="section-subtitle">
+            Find your friends easily despite <strong>loud concert music</strong> and <strong>basement cellular dead-zones</strong> using visual screen beacons, offline destination tracking, and fixed meetup hubs.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="primary-action-btn" id="openAddFriendModalBtn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+            ➕ Add Friend to Squad
+          </button>
+          <button class="primary-action-btn" onclick="openBeaconModal()" style="background: linear-gradient(135deg, #ec4899, #be185d);">
+            🚨 Open Screen Beacon
+          </button>
+        </div>
+      </div>
+
+      <!-- Loud Music & Basement Offline Advisory -->
+      <div class="offline-advisory-card">
+        <div class="advisory-icon">📡</div>
+        <div class="advisory-text">
+          <h3>Festival Noise & Basement Dead-Zone Survival Guide</h3>
+          <p>
+            <strong>Underground Alert:</strong> Cell signal drops in <em>Basement -2</em> and <em>Level -1</em>. Always broadcast your destination and expected return time before heading downstairs. 
+            In dark auditoriums with blasting music, hold up the <strong>Visual Screen Beacon</strong> above the crowd to spot each other across 50+ meters!
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Squad Layout -->
+      <div class="squad-layout-grid">
+        <!-- 1. My Live Location Card -->
+        <div class="my-status-box">
+          <div class="box-header">
+            <h3>📍 My Current Location & Status</h3>
+            <span class="live-pill"><span class="pulse-green"></span> Broadcasting</span>
+          </div>
+
+          <form id="updateMyStatusForm" class="status-update-form">
+            <div class="form-group">
+              <label for="myCurrentSpot">Where are you right now? *</label>
+              <select id="myCurrentSpot" required>
+                <optgroup label="Ground Floor Hub">
+                  <option value="auditorium|ground">🎭 Main Auditorium (Ground)</option>
+                  <option value="pre-auditorium|ground">🏛️ Pre-Auditorium Foyer</option>
+                  <option value="triangle-garden|ground" selected>🌿 Triangle Garden (Central Lawn)</option>
+                  <option value="pre-canteen|ground">🎨 Pre-Canteen Hall</option>
+                  <option value="canteen|ground">🍔 Main Canteen</option>
+                </optgroup>
+                <optgroup label="Underground Levels (No Cell Network)">
+                  <option value="hall-b1|-1">🎮 Level -1 (Hall Above Basement / Esports)</option>
+                  <option value="basement-b2|-2">🤖 Basement -2 (RoboWars Combat Arena)</option>
+                </optgroup>
+                <optgroup label="Academic Classroom Floors">
+                  <option value="room-103|1">1st Floor • Room 103 (Poetry & Drama)</option>
+                  <option value="room-202|2">2nd Floor • Room 202 (Debate & MUN)</option>
+                  <option value="room-301|3">3rd Floor • Room 301 (Hackathon Lab)</option>
+                  <option value="room-402|4">4th Floor • Room 402 (Design Sprint)</option>
+                  <option value="room-501|5">5th Floor • Room 501 (AI Masterclass)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="myNextSpot">Heading next to (optional):</label>
+                <select id="myNextSpot">
+                  <option value="Staying here">Staying here for now</option>
+                  <option value="Basement -2 RoboWars">Basement -2 (RoboWars)</option>
+                  <option value="Level -1 Esports">Level -1 (Esports Hall)</option>
+                  <option value="Main Auditorium Concert">Main Auditorium (Concert)</option>
+                  <option value="Main Canteen for Food">Main Canteen for Food</option>
+                  <option value="Triangle Garden Lawn">Triangle Garden Lawn</option>
+                  <option value="3rd Floor Hackathon">3rd Floor (Hackathon)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="myEstimatedUntil">Until approximate time:</label>
+                <input type="time" id="myEstimatedUntil" value="17:30">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="myStatusNote">Quick note for friends (landmark/seat):</label>
+              <input type="text" id="myStatusNote" placeholder="e.g. Left stone bench near big tree / Row 14 left side">
+            </div>
+
+            <button type="submit" class="primary-action-btn w-100">
+              💾 Update My Spot & Notify Squad
+            </button>
+          </form>
+        </div>
+
+        <!-- 2. Squad Members Live Radar Grid -->
+        <div class="squad-members-container">
+          <div class="squad-radar-header">
+            <h3>👥 Friends in Your Squad (<span id="squadListCount">3</span>)</h3>
+            <span class="sub-text">Tap any friend to locate them on the floor plan or launch a beacon</span>
+          </div>
+
+          <div class="squad-cards-grid" id="squadCardsContainer">
+            <!-- Rendered dynamically by script.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Fixed Campus Rendezvous Points -->
+      <div class="rendezvous-section">
+        <div class="rendezvous-header">
+          <div>
+            <h3>📍 4 Fixed Campus Rendezvous Points (Offline Safety Hubs)</h3>
+            <p>If your phone battery dies or friends are lost in the basement, meet at one of these agreed physical landmarks:</p>
+          </div>
+        </div>
+
+        <div class="rendezvous-grid">
+          <div class="rendezvous-card">
+            <span class="rdv-badge">HUB 1 • GROUND</span>
+            <h4>Pre-Auditorium Grand Pillar #1</h4>
+            <p>Right next to Lost & Found Counter #1 and main double entrance doors.</p>
+            <button class="outline-action-btn" onclick="selectArea('pre-auditorium')">🗺️ Show on Ground Map</button>
+          </div>
+          <div class="rendezvous-card">
+            <span class="rdv-badge green">HUB 2 • OUTDOOR</span>
+            <h4>Triangle Garden Banyan Tree</h4>
+            <p>Under the large shaded wooden benches in the center of the garden lawn.</p>
+            <button class="outline-action-btn" onclick="selectArea('triangle-garden')">🗺️ Show on Garden Map</button>
+          </div>
+          <div class="rendezvous-card">
+            <span class="rdv-badge amber">HUB 3 • DINING</span>
+            <h4>Pre-Canteen Hall Notice Board</h4>
+            <p>Large wooden fest notice board outside the Canteen glass doors.</p>
+            <button class="outline-action-btn" onclick="selectArea('pre-canteen')">🗺️ Show on Canteen Map</button>
+          </div>
+          <div class="rendezvous-card">
+            <span class="rdv-badge red">HUB 4 • BASEMENT EXIT</span>
+            <h4>Stairwell B Ground Landing</h4>
+            <p>Right at the top landing of the stairs leading up from Basement -1 & -2.</p>
+            <button class="outline-action-btn" onclick="switchFloor('ground')">🗺️ Show on Ground Map</button>
           </div>
         </div>
       </div>
@@ -615,6 +769,122 @@
 
         <button type="submit" class="primary-action-btn w-100 btn-large">
           📝 Submit Report to Helpdesk
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: VISUAL SCREEN BEACON (FOR LOUD CONCERTS & CROWDS) -->
+  <div class="modal-overlay" id="visualBeaconModal" aria-hidden="true" role="dialog">
+    <div class="modal-card beacon-modal-card">
+      <button class="modal-close-btn" id="closeBeaconModalBtn" aria-label="Close modal">✕</button>
+      
+      <div class="modal-header">
+        <span class="modal-tag" style="color: #f472b6;">Concert Strobe Beacon</span>
+        <h2>Visual Screen Beacon</h2>
+        <p class="modal-sub">Music too loud? Hold your phone high above the crowd. The flashing neon screen helps your friends spot you across the hall.</p>
+      </div>
+
+      <!-- Live Fullscreen Strobe Simulator -->
+      <div class="beacon-screen-preview" id="beaconScreenPreview">
+        <div class="beacon-strobe-overlay" id="beaconStrobeOverlay"></div>
+        <div class="beacon-text-content">
+          <span class="beacon-pin-icon">📍</span>
+          <h1 id="beaconDisplayName">ARJUN VERMA</h1>
+          <h2 id="beaconDisplayLocation">ROW 14 • MAIN AUDITORIUM</h2>
+          <p id="beaconDisplayNote">"Holding phone high! Flash active."</p>
+        </div>
+      </div>
+
+      <!-- Beacon Customizer Controls -->
+      <div class="beacon-controls">
+        <div class="beacon-color-options">
+          <label>Beacon Neon Color:</label>
+          <div class="color-pills">
+            <button class="color-dot active" data-color="#ec4899" style="background:#ec4899;" title="Hot Pink"></button>
+            <button class="color-dot" data-color="#06b6d4" style="background:#06b6d4;" title="Electric Cyan"></button>
+            <button class="color-dot" data-color="#10b981" style="background:#10b981;" title="Laser Green"></button>
+            <button class="color-dot" data-color="#f59e0b" style="background:#f59e0b;" title="Blazing Amber"></button>
+            <button class="color-dot" data-color="#8b5cf6" style="background:#8b5cf6;" title="Neon Violet"></button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="beaconCustomName">Display Name:</label>
+            <input type="text" id="beaconCustomName" value="ARJUN VERMA">
+          </div>
+          <div class="form-group">
+            <label for="beaconCustomSpot">Seat / Spot Landmark:</label>
+            <input type="text" id="beaconCustomSpot" value="ROW 14 • MAIN AUDITORIUM">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button class="primary-action-btn w-100" id="toggleStrobeBtn" style="background: linear-gradient(135deg, #ec4899, #be185d);">
+            ⚡ Toggle Strobe Flashing (Fast/Slow)
+          </button>
+          <button class="secondary-btn" id="fullScreenBeaconBtn">
+            📺 Maximize Screen
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD FRIEND TO SQUAD -->
+  <div class="modal-overlay" id="addFriendModal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="closeAddFriendModalBtn" aria-label="Close modal">✕</button>
+      
+      <div class="modal-header">
+        <span class="modal-tag">FestSquad</span>
+        <h2>Add Friend to Your Squad</h2>
+        <p class="modal-sub">Keep track of each other across floors, classrooms, and basements.</p>
+      </div>
+
+      <form id="addFriendForm" class="registration-form">
+        <div class="form-group">
+          <label for="friendName">Friend's Name *</label>
+          <input type="text" id="friendName" required placeholder="e.g. Siddharth Rao">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="friendRoll">Roll No / Student ID</label>
+            <input type="text" id="friendRoll" placeholder="e.g. 2024CS188">
+          </div>
+          <div class="form-group">
+            <label for="friendPhone">Phone / WhatsApp *</label>
+            <input type="tel" id="friendPhone" required placeholder="10-digit number" pattern="[0-9]{10}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="friendInitialSpot">Where are they right now? *</label>
+          <select id="friendInitialSpot" required>
+            <option value="auditorium|ground">🎭 Main Auditorium (Ground)</option>
+            <option value="pre-auditorium|ground">🏛️ Pre-Auditorium Foyer</option>
+            <option value="triangle-garden|ground">🌿 Triangle Garden (Central Lawn)</option>
+            <option value="pre-canteen|ground">🎨 Pre-Canteen Hall</option>
+            <option value="canteen|ground">🍔 Main Canteen</option>
+            <option value="hall-b1|-1">🎮 Level -1 (Hall Above Basement / Esports)</option>
+            <option value="basement-b2|-2">🤖 Basement -2 (RoboWars Combat Arena)</option>
+            <option value="room-103|1">1st Floor • Room 103</option>
+            <option value="room-202|2">2nd Floor • Room 202</option>
+            <option value="room-301|3" selected>3rd Floor • Room 301 (Hackathon)</option>
+            <option value="room-402|4">4th Floor • Room 402</option>
+            <option value="room-501|5">5th Floor • Room 501</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="friendInitialNote">Spot details (Seat / Bench / Desk):</label>
+          <input type="text" id="friendInitialNote" placeholder="e.g. Near projector screen / Charging laptop">
+        </div>
+
+        <button type="submit" class="primary-action-btn w-100 btn-large">
+          👥 Add to Squad Radar
         </button>
       </form>
     </div>
