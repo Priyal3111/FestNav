@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FestPulse - College Multi-Floor Campus Fest Navigator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Urgent Alert Bar -->
+  <aside class="emergency-top-bar" aria-label="Emergency Alert Bar">
+    <div class="container emergency-flex">
+      <div class="emergency-badge">
+        <span class="pulse-dot"></span>
+        <strong>CAMPUS FEST HELPLINE (24x7):</strong>
+      </div>
+      <div class="emergency-contacts">
+        <a href="tel:+919876543210" class="helpline-link">🚑 Medical Aid: Ground Floor (Next to Triangle Garden)</a>
+        <span class="sep">•</span>
+        <a href="#lost-found" class="helpline-link">🔍 Lost & Found: Pre-Auditorium Desk #1</a>
+        <span class="sep">•</span>
+        <a href="tel:+919876543211" class="helpline-link">🛡️ Security: +91 98765 43211</a>
+      </div>
+      <button class="quick-pass-btn" id="openMyPassesBtn" title="View Registered Tickets">
+        🎟️ My Passes (<span id="passCountBadge">0</span>)
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header">
+    <div class="container header-container">
+      <div class="brand-logo">
+        <div class="logo-icon">🎪</div>
+        <div class="logo-text">
+          <h1>FestPulse</h1>
+          <span class="sub-text">College 8-Level Campus Navigator (B2 to Floor 5)</span>
+        </div>
+      </div>
+
+      <nav class="nav-links" id="mainNav">
+        <a href="#floor-navigator" class="nav-item active"><span class="nav-icon">🏢</span> Floor Plans & Map</a>
+        <a href="#events" class="nav-item"><span class="nav-icon">📅</span> Events & Capacity</a>
+        <a href="#food-stalls" class="nav-item"><span class="nav-icon">🍔</span> Canteen & Food</a>
+        <a href="#medical-help" class="nav-item"><span class="nav-icon">🚑</span> Medical Aid</a>
+        <a href="#lost-found" class="nav-item"><span class="nav-icon">🔍</span> Lost & Found</a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Fest Filter Switcher -->
+        <select id="festSelector" class="fest-select-dropdown" aria-label="Select College Fest">
+          <option value="all">🎉 All College Fests</option>
+          <option value="tech" selected>⚡ TechSprint '26 (Annual Tech Fest)</option>
+          <option value="cultural">🎭 Vibrance '26 (Cultural Fest)</option>
+          <option value="sports">🏆 Spardha '26 (Sports & Esports)</option>
+        </select>
+        <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">📍 Live Campus Companion • Spring Fest 2026</span>
+        <h2 class="hero-title">Navigate Every Floor, Room & Arena Without Getting Lost</h2>
+        <p class="hero-desc">
+          Interactive floor-by-floor college blueprint covering <strong>Basement -2, Level -1 Hall, Ground Floor (Auditorium, Pre-Auditorium, Triangle Garden, Canteen, Pre-Canteen Hall)</strong>, and all <strong>5 Academic Floors (Rooms 101 to 505)</strong>.
+        </p>
+
+        <!-- Quick Level Jump Bar -->
+        <div class="quick-stats-grid">
+          <div class="stat-card" onclick="switchFloor('ground')" style="cursor: pointer;">
+            <span class="stat-number">Ground</span>
+            <span class="stat-label">Auditorium & Garden</span>
+          </div>
+          <div class="stat-card" onclick="switchFloor('5')" style="cursor: pointer;">
+            <span class="stat-number">5 Floors</span>
+            <span class="stat-label">25 Classrooms (101-505)</span>
+          </div>
+          <div class="stat-card" onclick="switchFloor('canteen')" style="cursor: pointer;">
+            <span class="stat-number">Canteen</span>
+            <span class="stat-label">& Pre-Canteen Hall</span>
+          </div>
+          <div class="stat-card" onclick="switchFloor('-2')" style="cursor: pointer;">
+            <span class="stat-number stat-highlight">B1 & B2</span>
+            <span class="stat-label">Esports & RoboWars</span>
+          </div>
+        </div>
+
+        <!-- Quick Jump Search -->
+        <div class="search-jump-box">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="globalSearchInput" placeholder="Search any room (e.g. Room 302, Pre-Auditorium, Triangle Garden, Canteen, Basement)..." autocomplete="off">
+            <button class="clear-search-btn" id="clearSearchBtn" style="display: none;">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Body -->
+  <main class="main-body container">
+
+    <!-- SECTION 1: INTERACTIVE MULTI-LEVEL FLOOR NAVIGATOR -->
+    <section id="floor-navigator" class="content-section">
+      <div class="section-header-row">
+        <div>
+          <div class="section-tag">🏢 Interactive College Blueprints</div>
+          <h2 class="section-title">Campus Floor-by-Floor Navigator</h2>
+          <p class="section-subtitle">Select any floor level below to view the interactive room layout, active fest events, capacity, and directions.</p>
+        </div>
+
+        <!-- Floor Switcher Buttons -->
+        <div class="floor-level-picker" id="floorLevelPicker">
+          <button class="floor-btn" data-floor="5">5th Floor</button>
+          <button class="floor-btn" data-floor="4">4th Floor</button>
+          <button class="floor-btn" data-floor="3">3rd Floor</button>
+          <button class="floor-btn" data-floor="2">2nd Floor</button>
+          <button class="floor-btn" data-floor="1">1st Floor</button>
+          <button class="floor-btn active" data-floor="ground">Ground Floor</button>
+          <button class="floor-btn" data-floor="-1">Level -1 Hall</button>
+          <button class="floor-btn" data-floor="-2">Basement -2</button>
+        </div>
+      </div>
+
+      <div class="map-layout">
+        <!-- Interactive Floor Plan Canvas -->
+        <div class="interactive-map-card">
+          <div class="floor-indicator-banner">
+            <div>
+              <span class="current-floor-pill" id="currentFloorBadge">GROUND FLOOR</span>
+              <span class="floor-rooms-meta" id="currentFloorMeta">Auditorium • Pre-Auditorium • Triangle Garden • Canteen • Pre-Canteen Hall</span>
+            </div>
+            <div class="elevator-stairs-legend">
+              <span>🛗 Elevators: Center</span>
+              <span>🪜 Stairs: East & West Wings</span>
+            </div>
+          </div>
+
+          <div class="map-viewport-wrapper" id="campusMapViewport">
+            <!-- Dynamically populated SVG Floor Blueprint -->
+            <svg id="campusSvg" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+              <!-- Rendered by script.js based on active floor -->
+            </svg>
+          </div>
+
+          <div class="map-legend">
+            <div class="legend-item"><span class="legend-dot event-dot"></span> Fest Event Venue</div>
+            <div class="legend-item"><span class="legend-dot food-dot"></span> Canteen & Food Stall</div>
+            <div class="legend-item"><span class="legend-dot medical-dot"></span> Medical / First Aid</div>
+            <div class="legend-item"><span class="legend-dot lost-dot"></span> Helpdesk / Lost & Found</div>
+            <div class="legend-item"><span class="legend-dot garden-dot"></span> Triangle Garden (Open Area)</div>
+          </div>
+        </div>
+
+        <!-- Selected Location Details Panel -->
+        <div class="location-details-sidebar" id="locationDetailsSidebar">
+          <div class="sidebar-empty-state" id="sidebarEmptyState">
+            <div class="empty-icon">📍</div>
+            <h3>Tap any room or area on the blueprint</h3>
+            <p>Click any room, classroom, or hall to view its real-time event schedule, capacity, and walking directions from the nearest elevator/stairs.</p>
+            <div class="quick-suggest-buttons">
+              <button class="quick-locate-btn" onclick="selectArea('auditorium')">🎭 Main Auditorium</button>
+              <button class="quick-locate-btn" onclick="selectArea('pre-auditorium')">🏛️ Pre-Auditorium Foyer</button>
+              <button class="quick-locate-btn" onclick="selectArea('triangle-garden')">🌿 Triangle Garden</button>
+              <button class="quick-locate-btn" onclick="selectArea('canteen')">🍔 Canteen & Pre-Canteen Hall</button>
+              <button class="quick-locate-btn" onclick="selectArea('hall-b1')">🎮 Level -1 Lower Hall</button>
+              <button class="quick-locate-btn" onclick="selectArea('basement-b2')">🤖 Basement -2 Arena</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Active Detail Card -->
+          <div class="active-location-card" id="activeLocationCard" style="display: none;">
+            <div class="location-card-header">
+              <span class="location-type-badge" id="locTypeBadge">Event Venue</span>
+              <button class="close-sidebar-btn" id="closeSidebarBtn" title="Close Panel">✕</button>
+            </div>
+            <h3 class="location-name" id="locTitle">Main Auditorium</h3>
+            <p class="location-landmark" id="locLandmark">📍 Ground Floor, West Wing</p>
+            
+            <div class="location-meta-grid">
+              <div class="meta-box">
+                <span class="meta-title">Seating Capacity</span>
+                <span class="meta-val" id="locCapacity">850 Seats</span>
+              </div>
+              <div class="meta-box">
+                <span class="meta-title">Current Status</span>
+                <span class="meta-val status-live" id="locStatus">Active Fest Event</span>
+              </div>
+            </div>
+
+            <div class="directions-guide">
+              <h4>🚶 How to Reach:</h4>
+              <p id="locDirections">From the college main entrance, walk through the Pre-Auditorium foyer. The double acoustic doors lead straight into the main hall.</p>
+            </div>
+
+            <div class="venue-events-list">
+              <h4>Scheduled Event in this Space:</h4>
+              <div id="locEventsContent">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <button class="primary-action-btn w-100" id="locPrimaryBtn">Register for Next Event</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: EVENTS, WORKSHOPS & LIVE CAPACITY -->
+    <section id="events" class="content-section">
+      <div class="section-header-row">
+        <div>
+          <div class="section-tag">📅 Schedule & On-Site Passes</div>
+          <h2 class="section-title">Fest Events & Real-Time Capacity</h2>
+          <p class="section-subtitle">Check exact date, time, floor, room number, and seat availability. Reserve your instant pass below.</p>
+        </div>
+        
+        <!-- Filter Controls -->
+        <div class="events-filter-bar">
+          <button class="filter-pill active" data-category="all">All Events</button>
+          <button class="filter-pill" data-category="Ground Floor Hub">Ground Floor & Garden</button>
+          <button class="filter-pill" data-category="Classroom Labs (1-5)">Classrooms (101-505)</button>
+          <button class="filter-pill" data-category="Basements (-1 & -2)">Basement & Lower Hall</button>
+          <button class="filter-pill" data-category="Hackathon & Coding">💻 Hackathons</button>
+          <button class="filter-pill" data-category="Cultural & Music">🎵 Music & Dance</button>
+          <button class="filter-pill" data-category="Gaming & Robo">🤖 Robotics & Gaming</button>
+        </div>
+      </div>
+
+      <!-- Events Grid Container -->
+      <div class="events-grid" id="eventsGridContainer">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+    </section>
+
+    <!-- SECTION 3: CANTEEN, PRE-CANTEEN HALL & FOOD STALLS -->
+    <section id="food-stalls" class="content-section">
+      <div class="section-header-row">
+        <div>
+          <div class="section-tag">🍔 Hunger & Dining Zone</div>
+          <h2 class="section-title">Canteen & Pre-Canteen Hall Stalls</h2>
+          <p class="section-subtitle">Hot meals, street food snacks, quick bites, and cold refreshments located at the Ground Floor Canteen wing and Pre-Canteen Hall.</p>
+        </div>
+
+        <div class="food-filter-pills">
+          <button class="filter-pill active" data-food-cat="all">All Stalls</button>
+          <button class="filter-pill" data-food-cat="canteen-main">Main Canteen Counters</button>
+          <button class="filter-pill" data-food-cat="pre-canteen">Pre-Canteen Hall Stalls</button>
+          <button class="filter-pill" data-food-cat="garden-kiosk">Triangle Garden Kiosk</button>
+          <button class="filter-pill" data-food-cat="veg">🌱 Pure Veg</button>
+        </div>
+      </div>
+
+      <div class="food-stalls-grid" id="foodStallsContainer">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+    </section>
+
+    <!-- SECTION 4: MEDICAL FIRST AID & HEALTH -->
+    <section id="medical-help" class="content-section">
+      <div class="section-header-row">
+        <div>
+          <div class="section-tag red-tag">🚑 Emergency First Aid</div>
+          <h2 class="section-title">Medical Stations & Doctor-on-Duty</h2>
+          <p class="section-subtitle">Strategically positioned first-aid units to handle emergencies, crowd fatigue, and sports injuries.</p>
+        </div>
+      </div>
+
+      <div class="emergency-banner-alert">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-text">
+          <h3>Emergency First-Aid Helpline (Immediate Assistance)</h3>
+          <p>If you or anyone nearby feels faint, dehydrated, or injured, call the direct college medical hotline or visit the station by the Triangle Garden.</p>
+        </div>
+        <a href="tel:+919876543210" class="emergency-call-btn">
+          📞 Medical Help: +91 98765 43210
+        </a>
+      </div>
+
+      <div class="medical-stations-grid">
+        <div class="medical-card">
+          <div class="med-header">
+            <span class="med-badge primary">Primary Medical Clinic</span>
+            <span class="med-icon">🏥</span>
+          </div>
+          <h3>Ground Floor Health Room</h3>
+          <p class="med-desc">Equipped with 4 rest beds, IV hydration, blood pressure monitors, emergency oxygen, and 2 on-duty resident doctors.</p>
+          <ul class="med-details-list">
+            <li><strong>📍 Exact Location:</strong> Ground Floor, East Corridor next to the Triangle Garden</li>
+            <li><strong>⏰ Hours:</strong> 24 Hours Open throughout Fest</li>
+            <li><strong>👨‍⚕️ In-Charge:</strong> Dr. V. K. Raman (Campus Medical Officer)</li>
+            <li><strong>📞 Direct Intercom:</strong> Ext. 101 / +91 98765 43210</li>
+          </ul>
+          <button class="outline-action-btn" onclick="selectArea('med-ground')">🗺️ Show on Floor Plan</button>
+        </div>
+
+        <div class="medical-card">
+          <div class="med-header">
+            <span class="med-badge secondary">Basement First Aid Kit</span>
+            <span class="med-icon">🩹</span>
+          </div>
+          <h3>Level -1 & -2 Rapid Aid Post</h3>
+          <p class="med-desc">Dedicated to the RoboWars arena and Esports crowd with burn bandages, eye wash kits, and pain relief sprays.</p>
+          <ul class="med-details-list">
+            <li><strong>📍 Exact Location:</strong> Level -1 Hall, near Elevator Shaft B</li>
+            <li><strong>⏰ Hours:</strong> 09:00 AM – 10:00 PM</li>
+            <li><strong>🧑‍⚕️ Volunteers:</strong> Red Cross Student First Responders (4 Members)</li>
+            <li><strong>📞 Direct Mobile:</strong> +91 98765 43214</li>
+          </ul>
+          <button class="outline-action-btn" onclick="selectArea('hall-b1')">🗺️ Show on Level -1</button>
+        </div>
+
+        <div class="medical-card">
+          <div class="med-header">
+            <span class="med-badge green">Outdoor Unit</span>
+            <span class="med-icon">💧</span>
+          </div>
+          <h3>Triangle Garden Hydration Booth</h3>
+          <p class="med-desc">Electrolyte water coolers, ORS sachets, glucose drinks, and sun-shade recovery benches in the garden.</p>
+          <ul class="med-details-list">
+            <li><strong>📍 Exact Location:</strong> Triangle Garden Pergola Pavilion</li>
+            <li><strong>⏰ Hours:</strong> 08:30 AM – 08:00 PM</li>
+            <li><strong>🥤 Supplies:</strong> Free cold water, ORS, antiseptic wipes</li>
+            <li><strong>📞 Desk:</strong> Ext. 104</li>
+          </ul>
+          <button class="outline-action-btn" onclick="selectArea('triangle-garden')">🗺️ Show on Garden Map</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: LOST & FOUND HELPDESK -->
+    <section id="lost-found" class="content-section">
+      <div class="section-header-row">
+        <div>
+          <div class="section-tag purple-tag">🔍 Student Helpdesk</div>
+          <h2 class="section-title">College Lost & Found Helpdesk</h2>
+          <p class="section-subtitle">Misplaced your ID card, keys, earphone case, or notebook? Check recovered items or report a lost item immediately.</p>
+        </div>
+        
+        <div>
+          <button class="primary-action-btn" id="openReportItemModalBtn">
+            ➕ Report a Lost or Found Item
+          </button>
+        </div>
+      </div>
+
+      <!-- Desk Info Bar -->
+      <div class="desk-location-box">
+        <div class="desk-info-text">
+          <strong>🏢 Physical Desk Location:</strong> Pre-Auditorium Foyer, Counter #1 (Right at Main Entrance Doors).
+        </div>
+        <div class="desk-contact">
+          <span>Coordinator: <strong>Ananya Sharma (Student Council)</strong></span>
+          <span class="sep">•</span>
+          <a href="tel:+919876543219" class="desk-phone">📞 +91 98765 43219</a>
+        </div>
+      </div>
+
+      <!-- Lost and Found Tabs & Filter -->
+      <div class="laf-controls">
+        <div class="laf-tabs">
+          <button class="laf-tab-btn active" data-laf-tab="all">All Items (<span id="lafTotalCount">6</span>)</button>
+          <button class="laf-tab-btn" data-laf-tab="found">🟢 Found Items (<span id="lafFoundCount">4</span>)</button>
+          <button class="laf-tab-btn" data-laf-tab="lost">🔴 Lost Items (<span id="lafLostCount">2</span>)</button>
+        </div>
+        
+        <div class="laf-search">
+          <input type="text" id="lafSearchInput" placeholder="Filter by item or room (e.g. Room 302, ID card, Canteen)...">
+        </div>
+      </div>
+
+      <!-- Lost & Found Cards Grid -->
+      <div class="laf-grid" id="lafContainer">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: EVENT REGISTRATION MODAL -->
+  <div class="modal-overlay" id="registrationModal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="closeRegModalBtn" aria-label="Close modal">✕</button>
+      
+      <div class="modal-header">
+        <span class="modal-tag" id="regModalFestName">College Fest Pass</span>
+        <h2 id="regModalEventTitle">Register for Event</h2>
+        <p class="modal-sub" id="regModalEventMeta">📅 Oct 24 • 10:00 AM • 📍 Room 301</p>
+      </div>
+
+      <!-- Live Capacity Bar inside Modal -->
+      <div class="modal-capacity-box">
+        <div class="cap-header-row">
+          <span>Current Room / Hall Capacity</span>
+          <strong id="regModalCapText">55 / 60 Seats Filled</strong>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="regModalCapFill" style="width: 90%;"></div>
+        </div>
+        <small class="cap-warning" id="regModalCapNote">⚡ Fast filling! Register to reserve your seat.</small>
+      </div>
+
+      <form id="eventRegistrationForm" class="registration-form">
+        <input type="hidden" id="regEventId">
+        
+        <div class="form-group">
+          <label for="regStudentName">Student Full Name *</label>
+          <input type="text" id="regStudentName" required placeholder="e.g. Aarav Mehta">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regStudentId">College Roll No / Student ID *</label>
+            <input type="text" id="regStudentId" required placeholder="e.g. 2024CS109">
+          </div>
+          <div class="form-group">
+            <label for="regCollege">Department / Branch *</label>
+            <input type="text" id="regCollege" required placeholder="e.g. Computer Science - Year 3">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regEmail">Email Address *</label>
+            <input type="email" id="regEmail" required placeholder="aarav@college.edu">
+          </div>
+          <div class="form-group">
+            <label for="regPhone">WhatsApp Mobile *</label>
+            <input type="tel" id="regPhone" required placeholder="9876543210" pattern="[0-9]{10}">
+          </div>
+        </div>
+
+        <div class="form-agreement">
+          <input type="checkbox" id="regAgreeTerms" required>
+          <label for="regAgreeTerms">I agree to college fest rules and will present my valid student ID at the room entrance.</label>
+        </div>
+
+        <button type="submit" class="primary-action-btn w-100 btn-large" id="submitRegBtn">
+          🎟️ Confirm & Generate Room Entry Pass
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: DIGITAL PASS / TICKET PREVIEW -->
+  <div class="modal-overlay" id="ticketModal" aria-hidden="true" role="dialog">
+    <div class="modal-card ticket-modal-card">
+      <button class="modal-close-btn" id="closeTicketModalBtn" aria-label="Close modal">✕</button>
+      
+      <div class="ticket-wrapper" id="ticketPrintArea">
+        <div class="ticket-header">
+          <div class="ticket-logo">🎪 CAMPUS ENTRY PASS</div>
+          <div class="ticket-id" id="tktPassId">#FP-50241</div>
+        </div>
+
+        <div class="ticket-body">
+          <span class="tkt-badge" id="tktFest">TechSprint '26</span>
+          <h2 class="tkt-title" id="tktEventName">AI & Web3 Hackathon</h2>
+
+          <div class="tkt-grid">
+            <div class="tkt-item">
+              <span class="tkt-label">ATTENDEE</span>
+              <span class="tkt-value" id="tktAttendee">Aarav Mehta</span>
+            </div>
+            <div class="tkt-item">
+              <span class="tkt-label">STUDENT ID</span>
+              <span class="tkt-value" id="tktRoll">2024CS109</span>
+            </div>
+            <div class="tkt-item">
+              <span class="tkt-label">DATE & TIME</span>
+              <span class="tkt-value" id="tktDateTime">Oct 24 • 10:00 AM</span>
+            </div>
+            <div class="tkt-item">
+              <span class="tkt-label">FLOOR & ROOM</span>
+              <span class="tkt-value" id="tktVenue">3rd Floor, Room 301</span>
+            </div>
+          </div>
+
+          <div class="ticket-qr-section">
+            <div class="qr-mock" id="tktQrMock">
+              <svg width="90" height="90" viewBox="0 0 100 100">
+                <rect width="100" height="100" fill="#ffffff" rx="6"/>
+                <rect x="10" y="10" width="24" height="24" fill="#0f172a" />
+                <rect x="14" y="14" width="16" height="16" fill="#ffffff" />
+                <rect x="18" y="18" width="8" height="8" fill="#0f172a" />
+
+                <rect x="66" y="10" width="24" height="24" fill="#0f172a" />
+                <rect x="70" y="14" width="16" height="16" fill="#ffffff" />
+                <rect x="74" y="18" width="8" height="8" fill="#0f172a" />
+
+                <rect x="10" y="66" width="24" height="24" fill="#0f172a" />
+                <rect x="14" y="70" width="16" height="16" fill="#ffffff" />
+                <rect x="18" y="74" width="8" height="8" fill="#0f172a" />
+
+                <rect x="42" y="14" width="8" height="14" fill="#0f172a" />
+                <rect x="42" y="38" width="16" height="8" fill="#0f172a" />
+                <rect x="65" y="45" width="22" height="8" fill="#0f172a" />
+                <rect x="45" y="62" width="12" height="24" fill="#0f172a" />
+                <rect x="68" y="68" width="18" height="18" fill="#0f172a" />
+              </svg>
+            </div>
+            <div class="qr-info">
+              <span class="verified-tag">✓ VERIFIED CAMPUS ENTRY PASS</span>
+              <p>Display on your phone screen to volunteers at the classroom or auditorium entrance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticket-footer">
+          <span>Non-transferable student pass</span>
+          <span>Helpdesk: Pre-Auditorium #1</span>
+        </div>
+      </div>
+
+      <div class="ticket-modal-actions">
+        <button class="primary-action-btn" onclick="window.print()">🖨️ Print / Save Pass PDF</button>
+        <button class="secondary-btn" id="locateFromTicketBtn">📍 View Room on Blueprint</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: MY REGISTERED PASSES DRAWER -->
+  <div class="modal-overlay" id="myPassesModal" aria-hidden="true" role="dialog">
+    <div class="modal-card passes-modal-card">
+      <button class="modal-close-btn" id="closeMyPassesBtn" aria-label="Close modal">✕</button>
+      
+      <div class="modal-header">
+        <span class="modal-tag">Wallet</span>
+        <h2>My Registered Passes</h2>
+        <p class="modal-sub">All your booked events across classroom and auditorium venues.</p>
+      </div>
+
+      <div class="passes-list" id="myPassesList">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REPORT LOST OR FOUND ITEM -->
+  <div class="modal-overlay" id="reportItemModal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="closeReportModalBtn" aria-label="Close modal">✕</button>
+      
+      <div class="modal-header">
+        <span class="modal-tag">Helpdesk Counter #1</span>
+        <h2>Report a Lost / Found Item</h2>
+        <p class="modal-sub">Submit details so volunteers or the owner can recover it immediately.</p>
+      </div>
+
+      <form id="reportItemForm" class="registration-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lafType">Status *</label>
+            <select id="lafType" required>
+              <option value="lost">🔴 I LOST an item</option>
+              <option value="found">🟢 I FOUND an item</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="lafCategory">Category *</label>
+            <select id="lafCategory" required>
+              <option value="ID Card & Wallet">ID Card & Wallet</option>
+              <option value="Electronics & Gadgets">Electronics & Gadgets</option>
+              <option value="Keys & Accessories">Keys & Accessories</option>
+              <option value="Bags & Notebooks">Bags & Notebooks</option>
+              <option value="Water Bottles & Apparel">Bottles & Apparel</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lafItemName">Item Name & Details *</label>
+          <input type="text" id="lafItemName" required placeholder="e.g. Blue Titan Watch / Black HP Laptop Charger">
+        </div>
+
+        <div class="form-group">
+          <label for="lafLocation">Room or Location Where Lost/Found *</label>
+          <input type="text" id="lafLocation" required placeholder="e.g. Room 302, Triangle Garden Bench, or Pre-Canteen Hall">
+        </div>
+
+        <div class="form-group">
+          <label for="lafDescription">Description *</label>
+          <textarea id="lafDescription" rows="3" required placeholder="Mention specific color, stickers, scratches, or identifying marks..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lafReporterName">Your Name *</label>
+            <input type="text" id="lafReporterName" required placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label for="lafContact">Phone Number *</label>
+            <input type="tel" id="lafContact" required placeholder="10-digit number" pattern="[0-9]{10}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lafDropStatus">Where is it currently deposited?</label>
+          <select id="lafDropStatus">
+            <option value="Deposited at Pre-Auditorium Desk #1">Deposited at Pre-Auditorium Desk #1 (Recommended)</option>
+            <option value="With Student Reporter">With me (Coordinate on call)</option>
+            <option value="Lost (Awaiting recovery)">Not found yet (Looking for it)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="primary-action-btn w-100 btn-large">
+          📝 Submit Report to Helpdesk
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="container footer-content">
+      <div class="footer-col">
+        <div class="brand-logo footer-logo">
+          <div class="logo-icon">🎪</div>
+          <div class="logo-text">
+            <h3>FestPulse 2026</h3>
+            <span class="sub-text">College 8-Level Campus Fest Portal</span>
+          </div>
+        </div>
+        <p class="footer-about">
+          100% frontend navigation companion built specifically for our college structure: 5 classroom floors (101-505), Auditorium, Pre-Auditorium, Triangle Garden, Canteen, Pre-Canteen Hall, and 2 Basement levels.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Key Campus Levels</h4>
+        <ul class="footer-links">
+          <li><a href="#floor-navigator" onclick="switchFloor('ground'); selectArea('auditorium');">Ground: Auditorium & Pre-Auditorium</a></li>
+          <li><a href="#floor-navigator" onclick="switchFloor('ground'); selectArea('triangle-garden');">Ground: Triangle Garden Outdoor Stage</a></li>
+          <li><a href="#floor-navigator" onclick="switchFloor('ground'); selectArea('canteen');">Ground: Canteen & Pre-Canteen Hall</a></li>
+          <li><a href="#floor-navigator" onclick="switchFloor('3'); selectArea('room-301');">Floor 3: Hackathon Labs (301-305)</a></li>
+          <li><a href="#floor-navigator" onclick="switchFloor('-1'); selectArea('hall-b1');">Level -1: Lower Hall (Esports Arena)</a></li>
+          <li><a href="#floor-navigator" onclick="switchFloor('-2'); selectArea('basement-b2');">Level -2: Basement (RoboWars Combat)</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Helplines</h4>
+        <ul class="footer-contacts">
+          <li>🚑 Medical Center: <a href="tel:+919876543210">+91 98765 43210</a> (Triangle Garden Wing)</li>
+          <li>🔍 Lost & Found: Pre-Auditorium Desk #1</li>
+          <li>🛡️ Central Security: Gate 1 Intercom Ext. 001</li>
+          <li>⚡ Pure Frontend: No Server or Database Required</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <p>© 2026 FestPulse. Pure HTML5, CSS3, & Vanilla JavaScript College Portal.</p>
+        <div class="status-indicator">
+          <span class="pulse-green"></span> 100% Frontend • Ready Offline
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
